@@ -33,3 +33,36 @@ const render = (beanVarieties) => {
 
   contentTarget.innerHTML = BeanVarieties;
 };
+
+const eventHub = document.querySelector(".container");
+eventHub.addEventListener("click", (clickEvent) => {
+  if (clickEvent.target.id === "saveBean") {
+    // need to gather the data from the form
+    const Name = document.querySelector("#BeanName").value;
+    const Region = document.querySelector("#BeanRegion").value;
+    const Note = document.querySelector("#BeanNote").value;
+
+    // Make a new object representation of a note
+    const newBean = {
+      Name: Name,
+      Region: Region,
+      Note: Note,
+
+      // Key/value pairs here
+    };
+
+    // Change API state and application state
+    saveBean(newBean);
+  }
+});
+
+const saveBean = (bean) => {
+  const stringifiedObj = JSON.stringify(bean);
+  return fetch("https://localhost:5001/api/beanvariety/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: stringifiedObj,
+  });
+};
